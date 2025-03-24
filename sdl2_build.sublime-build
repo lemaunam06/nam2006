@@ -1,0 +1,11 @@
+{
+    "cmd": ["make"],
+    "working_dir": "${project_path}",
+    "file_regex": "^(.*?):([0-9]*):([0-9]*)?:? (.*)$",
+    "variants": [
+        {
+            "name": "Run",
+            "cmd": ["./game"]
+        }
+    ]
+}
