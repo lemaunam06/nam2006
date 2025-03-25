@@ -75,11 +75,11 @@ bool initSDL(SDL_Window*& window, SDL_Renderer*& renderer, TTF_Font*& font) {
     return true;
 }
 
-void showMenu(SDL_Renderer* renderer, SDL_Texture* menuTexture, SDL_Texture* textTexture,Mix_Music* menuMusic) {
+void showMenu(SDL_Renderer* renderer, SDL_Texture* introlTexture,Mix_Music* menuMusic) {
     Mix_PlayMusic(menuMusic, -1); // phát nhạc
     bool menuRunning = true;
     SDL_Event event;
-    SDL_Rect textRect = {(800-200)/2, (600-160)/2, 200, 160}; // Vị trí và kích thước chữ
+    
 
     while (menuRunning) {
         while (SDL_PollEvent(&event)) {
@@ -90,14 +90,12 @@ void showMenu(SDL_Renderer* renderer, SDL_Texture* menuTexture, SDL_Texture* tex
             }
         }
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, menuTexture, NULL, NULL); // Vẽ ảnh nền
-        SDL_RenderCopy(renderer, textTexture, NULL, &textRect); // Vẽ chữ
+        SDL_RenderCopy(renderer, introlTexture, NULL, NULL); // Vẽ ảnh nền
         SDL_RenderPresent(renderer);
     }
     Mix_HaltMusic();
     // Giải phóng bộ nhớ đúng cách
-    SDL_DestroyTexture(menuTexture);
-    SDL_DestroyTexture(textTexture);
+    SDL_DestroyTexture(introlTexture);
     Mix_FreeMusic(menuMusic);
 }
 
@@ -184,31 +182,7 @@ void renderText(SDL_Renderer* renderer, TTF_Font* font, const string& text, int 
 }
 
 
-void GameOver(SDL_Renderer* renderer, TTF_Font* font, const string& message) {
-    SDL_Color red = {255, 0, 0};  // Màu đỏ
-    // Hiển thị chuỗi truyền vào thay vì cố định
-    renderText(renderer, font, message, 360, 280, red);
-
-    // Cập nhật màn hình
-    SDL_RenderPresent(renderer);
-    // Chờ người chơi nhấn Enter
-    SDL_Event e;
-    bool waiting = true;
-    while (waiting) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                waiting = false;
-                break;
-            }
-            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
-                waiting = false;
-                break;
-            }
-        }
-    }
-}
-
-void waitForEnterSDL(SDL_Renderer *renderer, SDL_Texture *victoryTexture) {
+void waitForEnterSDL(SDL_Renderer *renderer, SDL_Texture *Texture) {
     SDL_Event e;
     bool running = true;
     while (running) {
@@ -218,7 +192,7 @@ void waitForEnterSDL(SDL_Renderer *renderer, SDL_Texture *victoryTexture) {
             } else if (e.type == SDL_QUIT) {
                 running = false;
             }
-            SDL_RenderCopy(renderer, victoryTexture, NULL, NULL);
+            SDL_RenderCopy(renderer, Texture, NULL, NULL);
             SDL_RenderPresent(renderer);
         }
         SDL_Delay(10);

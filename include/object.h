@@ -24,11 +24,11 @@ struct Chicken {
     bool isOutOfScreen();
 };
 
-struct Bee {
+struct BonusBullet {
     SDL_Rect rect;
     SDL_Texture* texture;
     float speedy,posY,posX;
-    Bee(SDL_Texture* tex);
+    BonusBullet(SDL_Texture* tex);
     void move();
     bool isOutOfScreen();
 };
@@ -58,7 +58,8 @@ struct BossBullet {
 struct Bullet {
     SDL_Rect rect;
     SDL_Texture* texture;
-    float speed,posX, posY;
+    float posX, posY;
+    static float speed;
     Bullet(int x, int y, SDL_Texture* tex);
     void move();
     bool isOutOfScreen();
@@ -67,6 +68,7 @@ struct Bullet {
 struct Spaceship {
     SDL_Texture* texture;
     SDL_Rect rect;
+    int level;
     float speed, posX, posY;
     Spaceship();
     void move(SDL_Event& event);

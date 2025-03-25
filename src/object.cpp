@@ -7,7 +7,7 @@ Boss::Boss(SDL_Texture* tex) {
     rect.y = 0;
     rect.w = 150;
     rect.h = 200;
-    bossHp = 100;
+    bossHp = 500;
     posX = rect.x;
     speedX = 0.15f;
     texture = tex;
@@ -28,12 +28,12 @@ bool Boss::Died() {
 
 
 BossBullet::BossBullet(int x, int y, SDL_Texture* tex) {
-    rect.x = x + (75-20);
+    rect.x = x + (75-30);
     rect.y = y + 200;
-    rect.w = 40;
-    rect.h = 45;
+    rect.w = 60;
+    rect.h = 65;
     posY = rect.y;
-    speed = 0.3f;
+    speed = 0.5f;
     texture = tex;
 }
 
@@ -45,6 +45,7 @@ void BossBullet::move() {
 bool BossBullet::isOutOfScreen() {
     return rect.y > 600;
 }
+
 
 Chicken::Chicken(SDL_Texture* tex) {
     rect.x = 0 ;
@@ -62,34 +63,33 @@ bool Chicken::isOutOfScreen() {
     return rect.y > 600;
 }
 
-Bee::Bee(SDL_Texture* tex) {
+BonusBullet::BonusBullet(SDL_Texture* tex) {
     rect.x = rand() % (800 - 60 + 1);
     rect.y = -30;
     rect.w = 30;
     rect.h = 40;
     posY = rect.y;
     speedy = 0.2f; 
-    // random từ 1.0 đến 3.0 với bước 0.5
     texture = tex;
 }
 
-void Bee::move() {
+void BonusBullet::move() {
     posY += speedy;
     rect.y = static_cast<int>(posY);
 }
 
 
-bool Bee::isOutOfScreen() {
+bool BonusBullet::isOutOfScreen() {
     return rect.y > 600;
 }
 
 Egg::Egg(int x, int y, SDL_Texture* tex) {
     rect.x = x + 10;   // canh giữa trứng dưới gà
     rect.y = y + 40;   // dưới con gà 1 chút
-    rect.w = 15;
-    rect.h = 20;
+    rect.w = 30;
+    rect.h = 35;
     posY = rect.y;
-    speed = 0.2f;
+    speed = 0.6f;
     texture = tex;
 }
 
@@ -103,30 +103,12 @@ bool Egg::isOutOfScreen() {
 }
 
 
-Bullet::Bullet(int x, int y, SDL_Texture* tex) {
-    rect.x = x + 35;
-    rect.y = y;
-    rect.w = 10;
-    rect.h = 20;
-    texture = tex;
-    posY = rect.y;
-    speed =0.5f ;
-}
-
-void Bullet::move() {
-    posY -= speed;
-    rect.y = static_cast<int>(posY);
-}
-
-bool Bullet::isOutOfScreen() {
-    return rect.y + rect.h < 0;
-}
-
 Spaceship::Spaceship() {
     rect.x = 800 / 2 - 40;
     rect.y = 600 - 80;
-    rect.w = 80;
-    rect.h = 80;
+    rect.w = 60;
+    rect.h = 70;
+    level =1;
     posX = rect.x;
     posY = rect.y;
 }
@@ -139,6 +121,26 @@ void Spaceship::move(SDL_Event& event) {
 
     rect.x = static_cast<int>(posX);
     rect.y = static_cast<int>(posY);
+}
+
+Bullet::Bullet(int x, int y, SDL_Texture* tex) {
+    rect.x = x ;
+    rect.y = y;
+    rect.w = 10;
+    rect.h = 20;
+    texture = tex;
+    posY = rect.y;
+}
+
+float Bullet::speed = 0.5f;
+
+void Bullet::move() {
+    posY -= speed;
+    rect.y = static_cast<int>(posY);
+}
+
+bool Bullet::isOutOfScreen() {
+    return rect.y + rect.h < 0;
 }
 
 Bom1::Bom1(SDL_Texture* tex) {
@@ -168,8 +170,8 @@ Bom2::Bom2(SDL_Texture* tex){
     rect.h = 40;
     posY = rect.y;
     texture = tex;
-    v = 0.05f;
-    a = 0.0001f;
+    v = 0.6f;
+    a = 0.0005f;
 }
 void Bom2:: move(){
     v += a;
