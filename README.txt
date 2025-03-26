@@ -21,6 +21,7 @@ Game dựa trên ý tưởng của game bắn gà. Trong game, người chơi đ
 - **Trang Web**: [Phát Triển Phần Mềm 123AZ](https://phattrienphanmem123az.com/lap-trinh-game-c-p2)
 - **Kênh YouTube**: Phát Triển Phần Mềm 123 A-Z
 - **Nguồn Ảnh & Âm Thanh**: [Itch.io](https://itch.io/game-assets/free/genre-shooter/tag-space)
+                            [FreeSound](https://freesound.org/search/?q=gun+shot)
 - **Video Demo Game**: [YouTube](https://youtu.be/GMz_0kpGh1E)
 
 ## Hỗ Trợ Từ AI
