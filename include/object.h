@@ -68,7 +68,7 @@ struct Bullet {
 struct Spaceship {
     SDL_Texture* texture;
     SDL_Rect rect;
-    int level;
+    int level, hp;
     float speed, posX, posY;
     Spaceship();
     void move(SDL_Event& event);

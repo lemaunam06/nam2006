@@ -8,7 +8,14 @@
 #include <ctime>
 #include "object.h"
 #include "game.h"
-#include "gameloop.h"
+#include "chicken.h"
+#include "background.h"
+#include "bullet.h"
+#include "chicken.h"
+#include "collision.h"
+#include "bom.h"
+#include "boss.h"
+#include "bee.h"
 using namespace std;
 
 const int WINDOW_WIDTH = 800;
@@ -53,6 +60,8 @@ int main(int argc, char* argv[]) {
     SDL_Texture* bossbulletTexture = IMG_LoadTexture(renderer, "assets/bossBullet.png");
     SDL_Texture* victoryTexture = IMG_LoadTexture(renderer, "assets/victory.png");
     SDL_Texture* gameoverTexture = IMG_LoadTexture(renderer, "assets/gameover.png");
+    SDL_Texture* beeTexture = IMG_LoadTexture(renderer, "assets/bee.png");
+    SDL_Texture* heartTexture = IMG_LoadTexture(renderer, "assets/heart.png");
 
 
 
@@ -61,7 +70,8 @@ int main(int argc, char* argv[]) {
     Boss boss(bossTexture);
     vector <Chicken> chickens;
     vector<BonusBullet> bonusBullets;
-    vector <Egg> eggs;  
+    vector <Egg> eggs; 
+    vector <Bee> bees; 
     vector<Bullet> bullets;
     vector <BossBullet> bossBullets;
     vector <Bom1> bom1s;
@@ -78,11 +88,15 @@ int main(int argc, char* argv[]) {
     const Uint32 bulletCooldown = 200;
     Uint32 lastChickenSpawnTime = 0;
     const Uint32 chickenSpawnCooldown = 10000;
+    Uint32 lastBeeTime = 0;
+    const Uint32 beeCooldown = 6000;
     Uint32 lastBonusSpawnTime=0;
     const Uint32 bonusSpawnCooldown = 20000;
     Uint32 lastBomTime = 0;
     const Uint32 BomCooldown = 6000;
-    Uint32 bossAppearTime = 60000; // 60 giây
+    const Uint32 bossAppearTime = 60000; // 60 giây
+    const Uint32 eggBeeSpawnCooldown = 2000;
+    Uint32 lastEggBeeSpawnTime=0;
     Uint32 lastBossBulletTime = 0;
     Uint32 ExitTime = 0;
     
@@ -100,8 +114,8 @@ int main(int argc, char* argv[]) {
 
         Uint32 currentTime = SDL_GetTicks();
 
-        // sinh ra ong
         spawnEgg(chickens, eggs, eggTexture, currentTime, lastEggSpawnTime, eggSpawnCooldown);
+        spawnEggBee(bees,eggs,eggTexture,currentTime,lastEggBeeSpawnTime,eggBeeSpawnCooldown);
         if (spaceship.level >= 5) {
             spawnTripleBullet(keys, bullets, spaceship, bulletTexture, shootSound, lastBulletTime, bulletCooldown);
         } else if (spaceship.level >= 3) {
@@ -109,10 +123,11 @@ int main(int argc, char* argv[]) {
         } else {
             spawnBullet(keys, bullets, spaceship, bulletTexture, shootSound, currentTime, lastBulletTime, bulletCooldown);
         }
+        spawnBee(bees, beeTexture, currentTime, lastBeeTime, beeCooldown);
 
         spawnBonusBullet(bonusBullets,BonusBulletTexture,currentTime,lastBonusSpawnTime,bonusSpawnCooldown);
         bornChicken(chickens,chickenTexture,currentTime,lastChickenSpawnTime,chickenSpawnCooldown,chickenDirection);
-        // sinh ra bom loại 1
+        // sinh ra bom
         spawnBom(bom1s, bom2s, bom1Texture, bom2Texture, currentTime, lastBomTime, BomCooldown);
         spawnBoss(boss, currentTime, bossAppearTime);
         spawnBossBullet(boss, bossBullets, bossbulletTexture, currentTime, lastBossBulletTime, 1000);
@@ -141,22 +156,28 @@ int main(int argc, char* argv[]) {
         for (auto& bom : bom2s){
             bom.move();
         }
+        for (auto& bee : bees) {
+            bee.move();
+        }
+
         // Xử lí va chạm Đạn và gà 
-        BulletChickenCollision(bullets,chickens,score);
+        BulletChickenCollision(bullets,chickens);
+        bulletBeeCollision(bullets,bees);
 
         // Xử lí va chạm Bom loại 1,2 voi spaceship
-        Bom1Collision(bom1s,spaceship,running,died);
+        Bom1Collision(bom1s,spaceship);
 
         bonusBulletCollision(bonusBullets,spaceship);
 
-        Bom2Collision(bom2s,spaceship,running,died);
+        Bom2Collision(bom2s,spaceship);
+        BeesCollision(spaceship,bees);
 
         // Xử lí va chạm chicken and spaceship
-       ChickenCollision(chickens,spaceship,running,died);
+       ChickenCollision(chickens,spaceship);
        // xử lí va chạm tàu và trứng
-       EggCollision(eggs,spaceship,running,died);
+       EggCollision(eggs,spaceship);
        BulletBossCollision(bullets,boss,2);
-       BossBulletCollision(bossBullets, spaceship, running, died);
+       BossBulletCollision(bossBullets, spaceship);
 
 
         // Xử lí va chạm Bullet and Bom1
@@ -178,7 +199,8 @@ int main(int argc, char* argv[]) {
         removeBom2(bom2s);
         // Kiểm tra trứng ra khỏi màn hình
         removeEggs(eggs);
-        removeOutOfScreenBossBullets(bossBullets);
+        removeBee(bees);
+        removeBossBullets(bossBullets);
 
         SDL_Texture* currentScoreTexture = updateScoreTexture(renderer, font);
         updateBackground();  
@@ -187,6 +209,8 @@ int main(int argc, char* argv[]) {
         renderBackground(renderer, BackGroundTexture);
         SDL_RenderCopy(renderer, spaceship.texture, NULL, &spaceship.rect);
         renderText(renderer,font,highscoreText,20,40,textColor);
+        renderHearts(renderer, spaceship.hp, heartTexture);
+
         if (boss.appeared) {
             boss.move(WINDOW_WIDTH);
             SDL_RenderCopy(renderer, boss.texture, NULL, &boss.rect);
@@ -213,12 +237,20 @@ int main(int argc, char* argv[]) {
         for (auto& bossbullet : bossBullets) {
             SDL_RenderCopy(renderer, bossbullet.texture, NULL, &bossbullet.rect);
         }
+        for (auto& bee : bees) {
+            SDL_RenderCopy(renderer, beeTexture, NULL, &bee.rect);
+        }
+
         if (currentScoreTexture != nullptr) {
             SDL_Rect scoreRect;
             scoreRect.x = 20;  // Vị trí hiển thị điểm
             scoreRect.y = 20;
             SDL_QueryTexture(currentScoreTexture, NULL, NULL, &scoreRect.w, &scoreRect.h);
             SDL_RenderCopy(renderer, currentScoreTexture, NULL, &scoreRect);
+        }
+        if (spaceship.hp==0) {
+            running = false;
+            died = true;
         }
         if (ExitTime==0 && boss.Died()){
             lastBomTime = SDL_GetTicks();
@@ -247,19 +279,21 @@ int main(int argc, char* argv[]) {
     SDL_DestroyTexture(bulletTexture);
     SDL_DestroyTexture(BonusBulletTexture);
     SDL_DestroyTexture(chickenTexture);
+    SDL_DestroyTexture(beeTexture);
     SDL_DestroyTexture(eggTexture);
     SDL_DestroyTexture(bossbulletTexture);
     SDL_DestroyTexture(introlTexture);
     SDL_DestroyTexture(gameoverTexture); 
     SDL_DestroyTexture(bossTexture);
-    SDL_DestroyTexture(victoryTexture);           // Đóng hệ thống âm thanh
+    SDL_DestroyTexture(heartTexture);
+    SDL_DestroyTexture(victoryTexture);       
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_CloseFont(font);
     Mix_FreeMusic(bgMusic);      // Giải phóng nhạc nền
     Mix_FreeChunk(shootSound);
     Mix_FreeMusic(winSound);   // Giải phóng hiệu ứng âm thanh bắn đạn
-    Mix_CloseAudio();
+    Mix_CloseAudio();            // Đóng hệ thống âm thanh
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();

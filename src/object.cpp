@@ -109,6 +109,7 @@ Spaceship::Spaceship() {
     rect.w = 60;
     rect.h = 70;
     level =1;
+    hp=3;
     posX = rect.x;
     posY = rect.y;
 }
@@ -182,6 +183,7 @@ void Bom2:: move(){
 bool Bom2::isOutOfScreen() {
     return rect.y > 600;
 }
+
 
 
 

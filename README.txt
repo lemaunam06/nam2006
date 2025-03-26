@@ -1,66 +1,64 @@
-Họ và tên: Lê Mậu Nam
-Mã sinh viên: 24020243
+# README - Game SpaceShip War
 
--Giới thiệu về game: game dựa trên ý tưởng game bắn gà. Người chơi điều khiển tàu để tránh chướng ngại vật và tiêu diệt kẻ địch, sau khi hạ boss cuối màn người chơi sẽ chiến thắng.
+## Thông Tin Tác Giả
+- Họ và tên: Lê Mậu Nam  
+- Mã sinh viên: 24020243  
 
--Ngưỡng điểm mong muốn: >=9
+## Giới Thiệu Về Game
+Game dựa trên ý tưởng của game bắn gà. Trong game, người chơi điều khiển tàu vũ trụ tránh chướng ngài vật và tiêu diệt kẻ địch. Khi hạ Boss cuối màn, người chơi sẽ giành chiến thắng.
 
--Lý Do: có thêm những tính năng tự học như: 
-+ thời gian em bỏ ra làm game nhiều.
-+ game của em có các tính năng tự học như: âm thanh, nhạc nền, Texture, hoạt hình, font chữ, high score
-+ nhiều đối tượng game, các đối tượng đa dạng di chuyển khác nhau, di chuyển khá mượt mà, cấu trúc game rõ ràng, dể hiểu.
+## Ngưỡng Điểm Mong Muốn
+- Điểm: ≥9
+- **Lý do**:
+  - Dành nhiều thời gian tự học và phát triển game.
+  - Game tích hợp các tính năng:
+    - Hiển thị âm thanh, nhạc nền, texture, hoạt hình, font chữ.
+    - Hệ thống high score.
+    - Nhiều đối tượng game với chuyển động đa dạng và mượt mà.
+    - Cấu trúc game rõ ràng, dễ hiểu.
 
--NGUỒN THAM KHẢO: 
-+)Trang Wep: https://phattrienphanmem123az.com/lap-trinh-game-c-p2
-+)Kênh Youtube: Phát triển phần mềm 123 A-Z
-+)Nguồn lấy ảnh và âm thanh: https://itch.io/game-assets/free/genre-shooter/tag-space
+## Nguồn Tham Khảo
+- **Trang Web**: [Phát Triển Phần Mềm 123AZ](https://phattrienphanmem123az.com/lap-trinh-game-c-p2)
+- **Kênh YouTube**: Phát Triển Phần Mềm 123 A-Z
+- **Nguồn Ảnh & Âm Thanh**: [Itch.io](https://itch.io/game-assets/free/genre-shooter/tag-space)
+- **Video Demo Game**: [YouTube](https://youtu.be/GMz_0kpGh1E)
 
+## Hỗ Trợ Từ AI
+- Debug, tăng tốc game.
+- Sửa lỗi chính tả, cú pháp.
+- Giải thích chức năng và cách sử dụng lệnh.
+- Hướng dẫn GitHub, SDL2.
+- Cung cấp build system chạy SDL2 trên Sublime Text.
+- Giới thiệu tổ chức file.
 
--LINK VIDEO DEMO GAME:
-https://youtu.be/AQsimrE8tcs
+## Cách Chơi
+- **Chuột**: Di chuyển tàu vũ trụ.
+- **Mạng sống**: 3 mạng. Mỗi lần trúng bom, trứng, đạn hoặc va chạm với vật thể -> trừ 1 mạng. Hết mạng = Thua.
+- **Space (Cách)**: Bắn đạn.
+- **Mục tiêu**:
+  - Tránh chướng ngài vật, bắn kẻ địch.
+  - Tiêu diệt nhiều kẻ địch để đạt điểm cao.
+  - Hạ Boss -> Chiến thắng.
 
-+)HỖ TRỢ TỪ AI:
-- Hỗ trợ debug
-- Hỗ trợ tăng tốc game
-- Hỗ trợ sửa lỗi chính tả và cú pháp các câu lệnh
-- Hỗ trợ giải thích chức năng và cách sử dụng các câu lệnh.
-- Hỗ trợ hướng dẫn cách sử dụng github, SDL2
-- Hỗ trợ cung cấp build system chạy SDL2 trên sublime text
-- Hỗ trợ giới thiệu cách tổ chức file
-- Hỗ trợ xây dựng khung sườn chương trình và readme
-- Hỗ trợ: xây dựng đội gà hình chữ nhật.
+## Các Thành Phần Trong Game
+- **Gà & Ong**: Kẻ địch chính, xuất hiện liên tục.
+- **Bom**:
+  - **Bom1**: Rơi chậm, có thể bắn phá.
+  - **Bom2**: Rơi nhanh dần, không thể bắn phá.
+- **Trứng**: Xuất hiện từ gà & ong, chỉ có thể né.
+- **Boss**: Xuất hiện sau một thời gian, cần nhiều đạn tiêu diệt.
+- **Vật phẩm nâng cấp đạn**: Tăng tốc đạn, nâng cấp đạn (Đối đa: đạn cấp 3).
 
-1. CÁCH CHƠI
+## Hình Ảnh & Âm Thanh
+- **Âm thanh**: Hiệu ứng bắn, nổ, nhạc nền sôi động.
+- **Đồ họa**: 2D đơn giản (PNG, JPG).
 
--Sử dụng chuột để di chuyển tàu vũ trụ.
--Nhấn phím cách (Space) để bắn đạn tiêu diệt kẻ địch.
--Di chuyển tránh né cách chướng ngại vật và tiêu diệt kẻ địch.
--Cố gắng tiêu diệt càng nhiều kẻ địch càng tốt để đạt điểm cao.
--Sau khi hạ Boss thành công người chơi sẽ chiến thắng
+## Yêu Cầu Hệ Thống
+- Windows 64-bit.
+- Microsoft Visual C++ Redistributable (Đã cài sẵn hoặc cần cài).
+- Hỗ trợ OpenGL & DirectX.
 
-3. CÁC THÀNH PHẦN TRONG GAME
+## Cách Chạy Game
+1. Mở thư mục game.
+2. Chạy file **game.exe**.
 
--Gà: kẻ địch chính, xuất hiện liên tục.
--Bom: có 2 loại Bom
-	+Bom1 sẽ rơi chậmn đều và người chơi có thể dùng đạn bắn để phá bom.
-	+Bom2 sẽ rơi nhanh dần và người chơi không thể dùng đạn để bắn phá bom.
-- Trứng: sẽ được sinh ra tại vị trí của những chú gà, người chơi chỉ có thể né tránh.
--Boss: xuất hiện sau một thời gian, cần nhiều đạn để tiêu diệt.
--Vật phẩm nâng cấp đạn, người chơi sẽ được tăng tốc độ đạn và nâng cấp đạn (Tối đa là đạn 3) khi nhận vật phẩm thành công.
-
-- Âm Thanh:
-
-+ Hiệu ứng bắn, nổ, và nhạc nền sôi động.
-- Hình ảnh:
-+ Đồ họa 2D đơn giản với các hình ảnh PNG và JPG.
-
-4. YÊU CẦU HỆ THỐNG
-
-Windows 64-bit.
-Đã cài sẵn Microsoft Visual C++ Redistributable (nếu chưa có).
-Máy có hỗ trợ OpenGL và DirectX.
-
-5. CÁCH CHẠY GAME
-
-Mở thư mục Game.
-Chạy file game.exe.

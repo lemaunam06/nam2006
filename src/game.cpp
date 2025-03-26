@@ -7,9 +7,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-extern const int WINDOW_WIDTH = 800;
-extern const int WINDOW_HEIGHT = 600;
-extern const string WINDOW_TITLE = "MY GAME";
+
 
 bool initSDL(SDL_Window*& window, SDL_Renderer*& renderer, TTF_Font*& font) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -94,7 +92,6 @@ void showMenu(SDL_Renderer* renderer, SDL_Texture* introlTexture,Mix_Music* menu
         SDL_RenderPresent(renderer);
     }
     Mix_HaltMusic();
-    // Giải phóng bộ nhớ đúng cách
     SDL_DestroyTexture(introlTexture);
     Mix_FreeMusic(menuMusic);
 }
@@ -190,6 +187,7 @@ void waitForEnterSDL(SDL_Renderer *renderer, SDL_Texture *Texture) {
             if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
                 running = false;
             } else if (e.type == SDL_QUIT) {
+
                 running = false;
             }
             SDL_RenderCopy(renderer, Texture, NULL, NULL);
@@ -198,6 +196,14 @@ void waitForEnterSDL(SDL_Renderer *renderer, SDL_Texture *Texture) {
         SDL_Delay(10);
     }
 }
+
+void renderHearts(SDL_Renderer* renderer, int hp, SDL_Texture* heartTexture) {
+    for (int i = 0; i < hp; i++) {
+        SDL_Rect heartRect = { 670 + i * 40, 10, 32, 32 };  // mỗi trái tim cách nhau 40 pixel
+        SDL_RenderCopy(renderer, heartTexture, NULL, &heartRect);
+    }
+}
+
 
 
 
