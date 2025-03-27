@@ -2,7 +2,6 @@
 #define BACKGROUND_H
 
 #include <SDL.h>
-#include "object.h"
 using namespace std;
 
 

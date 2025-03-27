@@ -1,6 +1,9 @@
-#include "bee.h"
-#include "object.h"
 #include <vector>
+#include <SDL.h>
+#include <vector>
+#include <cstdlib>
+#include "bee.h"
+#include "chicken.h"
 using namespace std;
 
 Bee::Bee(SDL_Texture* texture) {

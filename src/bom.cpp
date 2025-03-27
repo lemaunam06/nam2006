@@ -1,10 +1,48 @@
 #include <SDL.h>
 #include <vector>
 #include <cstdlib>
-#include <ctime>
-#include "object.h"
 #include "bom.h"
 using namespace std;
+
+Bom1::Bom1(SDL_Texture* tex) {
+    rect.x = 0 + rand() % (800 - 40 + 1);
+    rect.y = -30;
+    rect.w = 45;
+    rect.h = 45;
+    posY = rect.y;
+    texture = tex;
+    speed = 0.15f;
+    hitCount = 0;
+}
+
+void Bom1::move() {
+    posY += speed;
+    rect.y = static_cast<int>(posY);
+}
+
+bool Bom1::isOutOfScreen() {
+    return rect.y > 600;
+}
+
+Bom2::Bom2(SDL_Texture* tex){
+    rect.x = 0 + rand() % (800 - 30 + 1);
+    rect.y = -5;
+    rect.w = 40;
+    rect.h = 40;
+    posY = rect.y;
+    texture = tex;
+    v = 0.6f;
+    a = 0.0005f;
+}
+void Bom2:: move(){
+    v += a;
+    posY += v;
+    rect.y = (int)posY;
+}
+
+bool Bom2::isOutOfScreen() {
+    return rect.y > 600;
+}
 
 void spawnBom(vector<Bom1>& bom1s, vector<Bom2>& bom2s, SDL_Texture* bom1Texture, SDL_Texture* bom2Texture, const Uint32& currentTime, Uint32& lastBomTime, const Uint32& BomCooldown) {
     if (currentTime - lastBomTime >= BomCooldown) {

@@ -6,9 +6,8 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include "object.h"
+#include "spaceship.h"
 #include "game.h"
-#include "chicken.h"
 #include "background.h"
 #include "bullet.h"
 #include "chicken.h"

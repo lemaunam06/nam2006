@@ -1,9 +1,43 @@
 #include <SDL.h>
 #include <vector>
 #include <cstdlib>
-#include "object.h"
 #include "chicken.h"
 using namespace std;
+
+Chicken::Chicken(SDL_Texture* tex) {
+    rect.x = 0 ;
+    rect.y = 0;
+    rect.w = 30;
+    rect.h = 40;
+    posX = rect.x;
+    posY = rect.y;
+    direction = 0;
+    texture = tex;
+}
+
+
+bool Chicken::isOutOfScreen() {
+    return rect.y > 600;
+}
+
+Egg::Egg(int x, int y, SDL_Texture* tex) {
+    rect.x = x + 10;   // canh giữa trứng dưới gà
+    rect.y = y + 40;   // dưới con gà 1 chút
+    rect.w = 30;
+    rect.h = 35;
+    posY = rect.y;
+    speed = 0.6f;
+    texture = tex;
+}
+
+void Egg::move() {
+    posY += speed;
+    rect.y = static_cast<int>(posY);
+}
+
+bool Egg::isOutOfScreen() {
+    return rect.y > 600;
+}
 
 
 void bornChicken(vector<Chicken>& chickens, SDL_Texture* chickenTexture, const Uint32 &currentTime, Uint32& lastChickenSpawnTime, const Uint32 &chickenSpawnCooldown, int &chickenDirection) 

@@ -2,12 +2,72 @@
 #include <SDL_mixer.h>
 #include <vector>
 #include <cstdlib>
-#include <ctime>
 #include <SDL.h>
-#include "object.h"
+#include "spaceship.h"
 #include "bullet.h"
 using namespace std;
 
+BossBullet::BossBullet(int x, int y, SDL_Texture* tex) {
+    rect.x = x + (75-30);
+    rect.y = y + 200;
+    rect.w = 60;
+    rect.h = 65;
+    posY = rect.y;
+    speed = 0.5f;
+    texture = tex;
+}
+
+void BossBullet::move() {
+    posY += speed;
+    rect.y = static_cast<int>(posY);
+}
+
+bool BossBullet::isOutOfScreen() {
+    return rect.y > 600;
+}
+
+
+
+
+BonusBullet::BonusBullet(SDL_Texture* tex) {
+    rect.x = rand() % (800 - 60 + 1);
+    rect.y = -30;
+    rect.w = 30;
+    rect.h = 40;
+    posY = rect.y;
+    speedy = 0.2f; 
+    texture = tex;
+}
+
+void BonusBullet::move() {
+    posY += speedy;
+    rect.y = static_cast<int>(posY);
+}
+
+
+bool BonusBullet::isOutOfScreen() {
+    return rect.y > 600;
+}
+
+Bullet::Bullet(int x, int y, SDL_Texture* tex) {
+    rect.x = x ;
+    rect.y = y;
+    rect.w = 10;
+    rect.h = 20;
+    texture = tex;
+    posY = rect.y;
+}
+
+float Bullet::speed = 0.5f;
+
+void Bullet::move() {
+    posY -= speed;
+    rect.y = static_cast<int>(posY);
+}
+
+bool Bullet::isOutOfScreen() {
+    return rect.y + rect.h < 0;
+}
 
 
 void spawnBullet(const Uint8* keys, vector<Bullet>& bullets, const Spaceship& spaceship, SDL_Texture* bulletTexture, Mix_Chunk* shootSound, const Uint32& currentTime, Uint32& lastBulletTime, const Uint32& bulletCooldown) {

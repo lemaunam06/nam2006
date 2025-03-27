@@ -1,8 +1,12 @@
 #include <vector>
 #include <SDL.h>
-#include "object.h"
 #include "collision.h"
 #include "bee.h"
+#include "bom.h"
+#include "boss.h"
+#include "bullet.h"
+#include "chicken.h"
+#include "spaceship.h"
 using namespace std;
 
 extern int score;

@@ -5,7 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <cstdlib>
-#include "object.h"
+#include "chicken.h"
 using namespace std;
 
 struct Bee {
