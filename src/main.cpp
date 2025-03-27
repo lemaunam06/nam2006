@@ -105,111 +105,78 @@ int main(int argc, char* argv[]) {
     bool died = false;
     SDL_Event event;
     while (running) {
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) running = false;
             spaceship.move(event);
         }
-        const Uint8* keys = SDL_GetKeyboardState(NULL);
 
+        // tạo nhân vật trong game
+        const Uint8* keys = SDL_GetKeyboardState(NULL);
         Uint32 currentTime = SDL_GetTicks();
 
-        spawnEgg(chickens, eggs, eggTexture, currentTime, lastEggSpawnTime, eggSpawnCooldown);
-        spawnEggBee(bees,eggs,eggTexture,currentTime,lastEggBeeSpawnTime,eggBeeSpawnCooldown);
-        if (spaceship.level >= 5) {
+        spawnEgg(chickens, eggs, eggTexture, currentTime, lastEggSpawnTime, eggSpawnCooldown);  // sinh ra trứng chỗ gà
+        spawnEggBee(bees,eggs,eggTexture,currentTime,lastEggBeeSpawnTime,eggBeeSpawnCooldown);  // sinh ra trứng chỗ ong
+        if (spaceship.level >= 5) {                                                             // tạo đạn (3 loại)
             spawnTripleBullet(keys, bullets, spaceship, bulletTexture, shootSound, lastBulletTime, bulletCooldown);
         } else if (spaceship.level >= 3) {
             spawnDoubleBullet(keys, bullets, spaceship, bulletTexture, shootSound, lastBulletTime, bulletCooldown);
         } else {
             spawnBullet(keys, bullets, spaceship, bulletTexture, shootSound, currentTime, lastBulletTime, bulletCooldown);
         }
-        spawnBee(bees, beeTexture, currentTime, lastBeeTime, beeCooldown);
-
-        spawnBonusBullet(bonusBullets,BonusBulletTexture,currentTime,lastBonusSpawnTime,bonusSpawnCooldown);
-        bornChicken(chickens,chickenTexture,currentTime,lastChickenSpawnTime,chickenSpawnCooldown,chickenDirection);
-        // sinh ra bom
-        spawnBom(bom1s, bom2s, bom1Texture, bom2Texture, currentTime, lastBomTime, BomCooldown);
-        spawnBoss(boss, currentTime, bossAppearTime);
-        spawnBossBullet(boss, bossBullets, bossbulletTexture, currentTime, lastBossBulletTime, 1000);
+        spawnBee(bees, beeTexture, currentTime, lastBeeTime, beeCooldown);                                           // sinh ra ong
+        spawnBonusBullet(bonusBullets,BonusBulletTexture,currentTime,lastBonusSpawnTime,bonusSpawnCooldown);         // vật phẩm nâng cấp đạn
+        bornChicken(chickens,chickenTexture,currentTime,lastChickenSpawnTime,chickenSpawnCooldown,chickenDirection); // sinh ra gà
+        spawnBom(bom1s, bom2s, bom1Texture, bom2Texture, currentTime, lastBomTime, BomCooldown); // sinh ra bom
+        spawnBoss(boss, currentTime, bossAppearTime);                                            // sinh ra Boss
+        spawnBossBullet(boss, bossBullets, bossbulletTexture, currentTime, lastBossBulletTime, 1000); // sinh ra đạn của Boss
+        
         // di chuyển
         moveChicken(chickens,chickenDirection,0.1f,(float)10,800);
+        for (auto& egg : eggs)  egg.move();
+        for (auto& bossbullet : bossBullets) bossbullet.move();
+        for (auto& bonus : bonusBullets) bonus.move();
+        for (auto& bullet : bullets)  bullet.move();
+        for (auto& bom : bom1s) bom.move();
+        for (auto& bom : bom2s) bom.move();
+        for (auto& bee : bees)  bee.move();
+
+        // Xử lí va chạm
         
-        for (auto& egg : eggs) {
-            egg.move();
-        }
+        BulletChickenCollision(bullets,chickens); // đạn và gà
+        bulletBeeCollision(bullets,bees);         // đạn và ong
+        Bom1Collision(bom1s,spaceship);            // bom và spaceship
+        bonusBulletCollision(bonusBullets,spaceship); // spaceship và vật phẩm nâng cấm đạn
+        Bom2Collision(bom2s,spaceship);             //  bom và spaceship
+        BeesCollision(spaceship,bees);              // ong và space ship
+        ChickenCollision(chickens,spaceship);        // chicken và spaceship
+        EggCollision(eggs,spaceship);               // tàu và trứng
+        BulletBossCollision(bullets,boss,2);         // đạn và boss
+        BossBulletCollision(bossBullets, spaceship);  // đạn của boss và spaceship
+        Bom1BulletCollision(bom1s, bullets);           // đạn và bom
 
-        for (auto& bossbullet : bossBullets) {
-            bossbullet.move();
-        }
+        //Xóa các nhân vật game khi ra khỏi màn hình
+        
+        removeBullets(bullets); // xóa đạn
+        removeChickens(chickens); // xoá gà
+        removeBonusBullet(bonusBullets); // xóa vật phẩm nâng cấp đạn
+        removeBom1(bom1s);          // xóa bom
+        removeBom2(bom2s);          // xóa bom
+        removeEggs(eggs);           // xóa trứng
+        removeBee(bees);            // xóa ong
+        removeBossBullets(bossBullets); // xóa đạn của boss
 
-        for (auto& bonus : bonusBullets){
-            bonus.move();
-        }
-        for (auto& bullet : bullets) {
-            bullet.move();
-        }
-
-        for (auto& bom : bom1s){
-            bom.move();
-        }
-
-        for (auto& bom : bom2s){
-            bom.move();
-        }
-        for (auto& bee : bees) {
-            bee.move();
-        }
-
-        // Xử lí va chạm Đạn và gà 
-        BulletChickenCollision(bullets,chickens);
-        bulletBeeCollision(bullets,bees);
-
-        // Xử lí va chạm Bom loại 1,2 voi spaceship
-        Bom1Collision(bom1s,spaceship);
-
-        bonusBulletCollision(bonusBullets,spaceship);
-
-        Bom2Collision(bom2s,spaceship);
-        BeesCollision(spaceship,bees);
-
-        // Xử lí va chạm chicken and spaceship
-       ChickenCollision(chickens,spaceship);
-       // xử lí va chạm tàu và trứng
-       EggCollision(eggs,spaceship);
-       BulletBossCollision(bullets,boss,2);
-       BossBulletCollision(bossBullets, spaceship);
-
-
-        // Xử lí va chạm Bullet and Bom1
-        Bom1BulletCollision(bom1s, bullets);
-
-
-
-        // Kiểm tra đạn ra khỏi màn hình chưa
-        removeBullets(bullets);
-
-        // Kiểm ra gà ra khỏi màn hình chưa
-        removeChickens(chickens);
-        // Kiểm tra ong ra khỏi màn hình chưa
-        removeBonusBullet(bonusBullets);
-
-        // Kiểm tra bom1 ra khỏi màn hình 
-        removeBom1(bom1s);
-        // Kiểm tra bom2 ra khỏi màn hình
-        removeBom2(bom2s);
-        // Kiểm tra trứng ra khỏi màn hình
-        removeEggs(eggs);
-        removeBee(bees);
-        removeBossBullets(bossBullets);
-
+        // update highscore
         SDL_Texture* currentScoreTexture = updateScoreTexture(renderer, font);
-        updateBackground();  
+        // update background
+        updateBackground(); 
 
+        // vẽ background, score và các nhân vật game
         SDL_RenderClear(renderer);
         renderBackground(renderer, BackGroundTexture);
         SDL_RenderCopy(renderer, spaceship.texture, NULL, &spaceship.rect);
         renderText(renderer,font,highscoreText,20,40,textColor);
         renderHearts(renderer, spaceship.hp, heartTexture);
-
         if (boss.appeared) {
             boss.move(WINDOW_WIDTH);
             SDL_RenderCopy(renderer, boss.texture, NULL, &boss.rect);
@@ -239,7 +206,6 @@ int main(int argc, char* argv[]) {
         for (auto& bee : bees) {
             SDL_RenderCopy(renderer, beeTexture, NULL, &bee.rect);
         }
-
         if (currentScoreTexture != nullptr) {
             SDL_Rect scoreRect;
             scoreRect.x = 20;  // Vị trí hiển thị điểm
@@ -258,19 +224,19 @@ int main(int argc, char* argv[]) {
         if(ExitTime!=0 && SDL_GetTicks()- ExitTime >= 2000) running = false;
         SDL_RenderPresent(renderer);
     }
-    Mix_HaltMusic();
-    saveHighScore(score,highscore);
-    SDL_RenderClear(renderer);
+    Mix_HaltMusic();  // tắt nhạc nền
+    saveHighScore(score,highscore);  // lưu điểm số
+    SDL_RenderClear(renderer);        // xóa màn hình
     if (died) {
-        waitForEnterSDL(renderer,gameoverTexture);
+        waitForEnterSDL(renderer,gameoverTexture);   // chờ người chơi nhấn enter để thoát
     }
     else if (boss.Died()){
         Mix_PlayMusic(winSound, -1);
-        waitForEnterSDL(renderer,victoryTexture);
+        waitForEnterSDL(renderer,victoryTexture);   // chờ người chơi nhấn enter để thoát
         Mix_HaltMusic();
     }
 
-
+    // Giải phóng bộ nhớ
     SDL_DestroyTexture(BackGroundTexture);
     SDL_DestroyTexture(spaceshipTexture);
     SDL_DestroyTexture(bom1Texture);
