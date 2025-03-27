@@ -22,7 +22,9 @@ Game dựa trên ý tưởng của game bắn gà. Trong game, người chơi đ
 - **Kênh YouTube**: Phát Triển Phần Mềm 123 A-Z
 - **Nguồn Ảnh & Âm Thanh**: [Itch.io](https://itch.io/game-assets/free/genre-shooter/tag-space)
                             [FreeSound](https://freesound.org/search/?q=gun+shot)
+- **Nguồn Font chữ: [font-Kanit](https://fonts.google.com/specimen/Kanit)
 - **Video Demo Game**: [YouTube](https://youtu.be/GMz_0kpGh1E)
+
 
 ## Hỗ Trợ Từ AI
 - Debug, tăng tốc game.
@@ -49,6 +51,39 @@ Game dựa trên ý tưởng của game bắn gà. Trong game, người chơi đ
 - **Trứng**: Xuất hiện từ gà & ong, chỉ có thể né.
 - **Boss**: Xuất hiện sau một thời gian, cần nhiều đạn tiêu diệt.
 - **Vật phẩm nâng cấp đạn**: Tăng tốc đạn, nâng cấp đạn (Đối đa: đạn cấp 3).
+
+Cấu trúc của project game:
+
+SpaceShipWar/  
+│── Game/                     # Thư mục chứa tài nguyên và file chạy game  
+│   ├── assets/               # Chứa tất cả hình ảnh, âm thanh, font chữ của game  
+│   ├── game.exe              # File chạy game  
+│   ├── highscore.txt         # Lưu điểm số cao nhất của người chơi  
+│  
+│── include/                  # Thư mục chứa các file header  
+│   ├── background.h          # Xử lý background  
+│   ├── bee.h                 # Xử lý ong  
+│   ├── bom.h                 # Xử lý bom  
+│   ├── boss.h                # Xử lý boss  
+│   ├── bullet.h              # Xử lý đạn  
+│   ├── chicken.h             # Xử lý gà  
+│   ├── collision.h           # Xử lý va chạm giữa các nhân vật  
+│   ├── game.h                # Khởi tạo SDL và màn hình chờ  
+│── src/                      # Thư mục chứa các file định nghĩa  
+│   ├── background.cpp  
+│   ├── bee.cpp  
+│   ├── bom.cpp  
+│   ├── boss.cpp  
+│   ├── bullet.cpp  
+│   ├── chicken.cpp  
+│   ├── collision.cpp  
+│   ├── game.cpp  
+│   ├── main.cpp  
+│  
+│── Makefile                  # File build game  
+│── README.txt                # File giới thiệu game  
+│── sdl2_build.sublime-build  # Cấu hình build trong Sublime Text  
+
 
 ## Hình Ảnh & Âm Thanh
 - **Âm thanh**: Hiệu ứng bắn, nổ, nhạc nền sôi động.
