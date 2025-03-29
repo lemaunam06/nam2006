@@ -10,6 +10,7 @@ struct Boss {
     bool appeared = false; 
     Boss(SDL_Texture* tex);
     void move(const int &windowWidth);
+    void renderHealthBar(SDL_Renderer* renderer);
     bool Died();
 };
 

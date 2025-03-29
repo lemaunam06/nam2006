@@ -1,7 +1,7 @@
 #include "background.h"
 
 float backgroundY = 0;
-const float backgroundScrollSpeed = 0.5;
+const float backgroundScrollSpeed = 0.15f;
 // Hàm cập nhật vị trí background
 void updateBackground() {
     backgroundY += backgroundScrollSpeed;

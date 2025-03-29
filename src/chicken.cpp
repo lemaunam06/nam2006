@@ -23,10 +23,10 @@ bool Chicken::isOutOfScreen() {
 Egg::Egg(int x, int y, SDL_Texture* tex) {
     rect.x = x + 10;   // canh giữa trứng dưới gà
     rect.y = y + 40;   // dưới con gà 1 chút
-    rect.w = 30;
-    rect.h = 35;
+    rect.w = 40;
+    rect.h = 45;
     posY = rect.y;
-    speed = 0.6f;
+    speed = 0.2f;
     texture = tex;
 }
 

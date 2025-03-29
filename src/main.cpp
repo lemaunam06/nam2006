@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     Mix_PlayMusic(bgMusic, -1);
 
     Uint32 lastEggSpawnTime = 0;
-    const Uint32 eggSpawnCooldown = 3000; // 3 giây kiểm tra 1 lần 
+    const Uint32 eggSpawnCooldown = 3000; 
     Uint32 lastBulletTime = 0;
     const Uint32 bulletCooldown = 200;
     Uint32 lastChickenSpawnTime = 0;
@@ -90,12 +90,13 @@ int main(int argc, char* argv[]) {
     Uint32 lastBeeTime = 0;
     const Uint32 beeCooldown = 6000;
     Uint32 lastBonusSpawnTime=0;
-    const Uint32 bonusSpawnCooldown = 20000;
+    const Uint32 bonusSpawnCooldown = 10000;
     Uint32 lastBomTime = 0;
-    const Uint32 BomCooldown = 6000;
-    const Uint32 bossAppearTime = 60000; // 60 giây
-    const Uint32 eggBeeSpawnCooldown = 2000;
+    const Uint32 BomCooldown = 10000;
+    const Uint32 bossAppearTime = 80000; // 60 giây
+    const Uint32 eggBeeSpawnCooldown = 3000;
     Uint32 lastEggBeeSpawnTime=0;
+    const Uint32 BossBulletCooldown = 3000;
     Uint32 lastBossBulletTime = 0;
     Uint32 ExitTime = 0;
     
@@ -115,24 +116,29 @@ int main(int argc, char* argv[]) {
         const Uint8* keys = SDL_GetKeyboardState(NULL);
         Uint32 currentTime = SDL_GetTicks();
 
+        if  (!boss.appeared) {
+            spawnBee(bees, beeTexture, currentTime, lastBeeTime, beeCooldown);                      // sinh ra ong                 
+            bornChicken(chickens,chickenTexture,currentTime,lastChickenSpawnTime,chickenSpawnCooldown,chickenDirection); // sinh ra gà
+            spawnBom(bom1s, bom2s, bom1Texture, bom2Texture, currentTime, lastBomTime, BomCooldown);        // sinh ra bom
+        }                  
+        spawnBonusBullet(bonusBullets,BonusBulletTexture,currentTime,lastBonusSpawnTime,bonusSpawnCooldown);    // vật phẩm nâng cấp đạn
+        spawnBoss(boss, currentTime, bossAppearTime);                                                           // sinh ra Boss
+        spawnBossBullet(boss, bossBullets, bossbulletTexture, currentTime, lastBossBulletTime, BossBulletCooldown );           // sinh ra đạn của Boss
         spawnEgg(chickens, eggs, eggTexture, currentTime, lastEggSpawnTime, eggSpawnCooldown);  // sinh ra trứng chỗ gà
         spawnEggBee(bees,eggs,eggTexture,currentTime,lastEggBeeSpawnTime,eggBeeSpawnCooldown);  // sinh ra trứng chỗ ong
-        if (spaceship.level >= 5) {                                                             // tạo đạn (3 loại)
+
+        if (spaceship.level >= 7) { // tạo đạn (4 loại)
+            spawnFiveBullets(keys,bullets,spaceship,bulletTexture,shootSound,lastBulletTime,bulletCooldown);
+        }else if (spaceship.level >= 5) {                                                                             
             spawnTripleBullet(keys, bullets, spaceship, bulletTexture, shootSound, lastBulletTime, bulletCooldown);
         } else if (spaceship.level >= 3) {
             spawnDoubleBullet(keys, bullets, spaceship, bulletTexture, shootSound, lastBulletTime, bulletCooldown);
         } else {
             spawnBullet(keys, bullets, spaceship, bulletTexture, shootSound, currentTime, lastBulletTime, bulletCooldown);
         }
-        spawnBee(bees, beeTexture, currentTime, lastBeeTime, beeCooldown);                                           // sinh ra ong
-        spawnBonusBullet(bonusBullets,BonusBulletTexture,currentTime,lastBonusSpawnTime,bonusSpawnCooldown);         // vật phẩm nâng cấp đạn
-        bornChicken(chickens,chickenTexture,currentTime,lastChickenSpawnTime,chickenSpawnCooldown,chickenDirection); // sinh ra gà
-        spawnBom(bom1s, bom2s, bom1Texture, bom2Texture, currentTime, lastBomTime, BomCooldown); // sinh ra bom
-        spawnBoss(boss, currentTime, bossAppearTime);                                            // sinh ra Boss
-        spawnBossBullet(boss, bossBullets, bossbulletTexture, currentTime, lastBossBulletTime, 1000); // sinh ra đạn của Boss
         
         // di chuyển
-        moveChicken(chickens,chickenDirection,0.1f,(float)10,800);
+        moveChicken(chickens,chickenDirection,0.05f,(float)10,800);
         for (auto& egg : eggs)  egg.move();
         for (auto& bossbullet : bossBullets) bossbullet.move();
         for (auto& bonus : bonusBullets) bonus.move();
@@ -172,6 +178,7 @@ int main(int argc, char* argv[]) {
         updateBackground(); 
 
         // vẽ background, score và các nhân vật game
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Đặt màu đen
         SDL_RenderClear(renderer);
         renderBackground(renderer, BackGroundTexture);
         SDL_RenderCopy(renderer, spaceship.texture, NULL, &spaceship.rect);
@@ -180,6 +187,7 @@ int main(int argc, char* argv[]) {
         if (boss.appeared) {
             boss.move(WINDOW_WIDTH);
             SDL_RenderCopy(renderer, boss.texture, NULL, &boss.rect);
+            boss.renderHealthBar(renderer);
             removeBoss(boss);
         }
         for (const auto& bullet : bullets) {

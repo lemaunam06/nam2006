@@ -125,7 +125,7 @@ void bonusBulletCollision(vector<BonusBullet>& bonusBullets, Spaceship& spaceshi
     for (int i = bonusBullets.size() - 1; i >= 0; --i) {
         if (checkCollision(bonusBullets[i].rect, spaceship.rect)) {
             spaceship.level++;
-            Bullet::speed += 0.2f;
+            Bullet::speedY += 0.1f;
             bonusBullets.erase(bonusBullets.begin()+i);
         }
     }

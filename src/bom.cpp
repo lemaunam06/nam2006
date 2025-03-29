@@ -31,7 +31,7 @@ Bom2::Bom2(SDL_Texture* tex){
     rect.h = 40;
     posY = rect.y;
     texture = tex;
-    v = 0.6f;
+    v = 0.1f;
     a = 0.0005f;
 }
 void Bom2:: move(){
