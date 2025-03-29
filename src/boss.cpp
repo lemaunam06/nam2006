@@ -60,7 +60,7 @@ void Boss::renderHealthBar(SDL_Renderer* renderer) {
     SDL_RenderFillRect(renderer, &backgroundBar);
 
     // Vẽ thanh máu (màu đỏ)
-      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect healthBar = { barX, barY, currentBarWidth, barHeight };
     SDL_RenderFillRect(renderer, &healthBar);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

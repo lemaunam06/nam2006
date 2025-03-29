@@ -23,7 +23,7 @@ Game dựa trên ý tưởng của game bắn gà. Trong game, người chơi đ
 - **Nguồn Ảnh & Âm Thanh**: [Itch.io](https://itch.io/game-assets/free/genre-shooter/tag-space)
                             [FreeSound](https://freesound.org/search/?q=gun+shot)
 - **Nguồn Font chữ: [font-Kanit](https://fonts.google.com/specimen/Kanit)
-- **Video Demo Game**: [YouTube](https://youtu.be/GMz_0kpGh1E)
+- **Video Demo Game**: [YouTube](https://youtu.be/NOwKjARQe0k)
 
 
 ## Hỗ Trợ Từ AI
